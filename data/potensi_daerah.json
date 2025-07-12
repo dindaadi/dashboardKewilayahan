@@ -1,0 +1,8 @@
+{
+  "region": "Sulawesi Selatan",
+  "sectors": [
+    {"name": "Listrik", "value": 9.86},
+    {"name": "Gas", "value": 5.92},
+    {"name": "Kopi", "value": 4.11}
+  ]
+}

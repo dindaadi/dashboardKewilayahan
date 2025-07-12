@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Dashboard Nasional</h2>
+<p>Pertumbuhan Ekonomi Target: {{ data.nasional.target }}% | Realisasi: {{ data.nasional.realisasi }}%</p>
+
+<div id="map" style="height: 400px;"></div>
+{% endblock %}

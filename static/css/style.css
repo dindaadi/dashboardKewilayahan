@@ -1,0 +1,13 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+header {
+    background: #004080;
+    color: #fff;
+    padding: 1rem;
+}
+
+#map {
+    border: 2px solid #000;
+}

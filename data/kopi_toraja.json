@@ -1,0 +1,9 @@
+{
+  "total_produksi": 3.2,
+  "nilai_produksi": 9535675,
+  "lokasi_terbesar": "Desa Paku",
+  "penghasil_terbesar": [
+    {"provinsi": "Sulawesi Selatan", "produksi": 200000},
+    {"provinsi": "Lampung", "produksi": 100000}
+  ]
+}

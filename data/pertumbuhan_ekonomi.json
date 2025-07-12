@@ -1,0 +1,22 @@
+{
+  "nasional": {
+    "target": 5.2,
+    "realisasi": 4.8
+  },
+  "gini": {
+    "target": 0.375,
+    "realisasi": 0.381
+  },
+  "kemiskinan": {
+    "target": 6.5,
+    "realisasi": 8.57
+  },
+  "pengangguran": {
+    "target": 5.3,
+    "realisasi": 5.3
+  },
+  "ipm": {
+    "target": 5.3,
+    "realisasi": 5.3
+  }
+}

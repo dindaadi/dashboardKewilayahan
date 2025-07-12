@@ -1,0 +1,13 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {"name": "Papua Barat Daya"},
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[134.5, -1.0], [134.5, -2.0], [135.5, -2.0], [135.5, -1.0], [134.5, -1.0]]]
+      }
+    }
+  ]
+}
