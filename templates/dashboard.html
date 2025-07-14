@@ -1,7 +1,177 @@
 {% extends "base.html" %}
-{% block content %}
-<h2>Dashboard Nasional</h2>
-<p>Pertumbuhan Ekonomi Target: {{ data.nasional.target }}% | Realisasi: {{ data.nasional.realisasi }}%</p>
 
-<div id="map" style="height: 400px;"></div>
+{% block content %}
+<div class="container-fluid">
+    <!-- Filter Controls -->
+    <div class="filter-controls mb-4">
+        <div class="filter-group">
+            <button class="btn btn-primary dropdown-toggle btn-dropdown" type="button" data-bs-toggle="dropdown">
+                <i class="fas fa-globe me-2"></i> Nasional
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Nasional</a></li>
+                <li><a class="dropdown-item" href="#">Provinsi</a></li>
+                <li><a class="dropdown-item" href="#">Kabupaten/Kota</a></li>
+            </ul>
+        </div>
+        <div class="filter-group">
+            <button class="btn btn-success dropdown-toggle btn-dropdown" type="button" data-bs-toggle="dropdown">
+                <i class="fas fa-calendar me-2"></i> 2025
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">2025</a></li>
+                <li><a class="dropdown-item" href="#">2024</a></li>
+                <li><a class="dropdown-item" href="#">2023</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="dashboard-container">
+        <div class="dashboard-grid">
+            <!-- Pertumbuhan Ekonomi Card -->
+            <div class="card" data-card-type="economic-growth">
+                <div class="card-header">
+                    <h3>{{ data.pertumbuhan_ekonomi.title }}</h3>
+                </div>
+                <div class="card-metrics">
+                    <div class="metric">
+                        <span class="metric-label">Target</span>
+                        <span class="metric-value">{{ data.pertumbuhan_ekonomi.target }}{{ data.pertumbuhan_ekonomi.unit }}</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Realisasi</span>
+                        <span class="metric-value {% if data.pertumbuhan_ekonomi.status == 'below' %}text-danger{% else %}text-success{% endif %}">
+                            {{ data.pertumbuhan_ekonomi.realisasi }}{{ data.pertumbuhan_ekonomi.unit }}
+                        </span>
+                    </div>
+                </div>
+                <div class="card-main">
+                    <div class="big-number">{{ data.pertumbuhan_ekonomi.big_number }}{{ data.pertumbuhan_ekonomi.unit }}</div>
+                    <div class="province-name">{{ data.pertumbuhan_ekonomi.province }}</div>
+                </div>
+            </div>
+
+            <!-- Gini Rasio Card -->
+            <div class="card" data-card-type="gini-ratio">
+                <div class="card-header">
+                    <h3>{{ data.gini_rasio.title }}</h3>
+                </div>
+                <div class="card-metrics">
+                    <div class="metric">
+                        <span class="metric-label">Target</span>
+                        <span class="metric-value">{{ data.gini_rasio.target }}</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Realisasi</span>
+                        <span class="metric-value {% if data.gini_rasio.status == 'above' %}text-danger{% else %}text-success{% endif %}">
+                            {{ data.gini_rasio.realisasi }}
+                        </span>
+                    </div>
+                </div>
+                <div class="card-chart">
+                    <canvas id="giniChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+
+            <!-- Kemiskinan Card -->
+            <div class="card" data-card-type="poverty">
+                <div class="card-header">
+                    <h3>{{ data.kemiskinan.title }}</h3>
+                </div>
+                <div class="card-metrics">
+                    <div class="metric">
+                        <span class="metric-label">Target</span>
+                        <span class="metric-value">{{ data.kemiskinan.target }}{{ data.kemiskinan.unit }}</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Realisasi</span>
+                        <span class="metric-value {% if data.kemiskinan.status == 'above' %}text-danger{% else %}text-success{% endif %}">
+                            {{ data.kemiskinan.realisasi }}{{ data.kemiskinan.unit }}
+                        </span>
+                    </div>
+                </div>
+                <div class="card-main">
+                    <div class="big-number">{{ data.kemiskinan.big_number }}{{ data.kemiskinan.unit }}</div>
+                    <div class="province-name">{{ data.kemiskinan.province }}</div>
+                </div>
+            </div>
+
+            <!-- Pengangguran Card -->
+            <div class="card" data-card-type="unemployment">
+                <div class="card-header">
+                    <h3>{{ data.pengangguran.title }}</h3>
+                </div>
+                <div class="card-metrics">
+                    <div class="metric">
+                        <span class="metric-label">Target</span>
+                        <span class="metric-value">{{ data.pengangguran.target }}{{ data.pengangguran.unit }}</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Realisasi</span>
+                        <span class="metric-value {% if data.pengangguran.status == 'equal' %}text-success{% elif data.pengangguran.status == 'above' %}text-danger{% else %}text-success{% endif %}">
+                            {{ data.pengangguran.realisasi }}{{ data.pengangguran.unit }}
+                        </span>
+                    </div>
+                </div>
+                <div class="card-chart">
+                    <canvas id="pengangguranChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+
+            <!-- IPM Card -->
+            <div class="card" data-card-type="hdi">
+                <div class="card-header">
+                    <h3>{{ data.ipm.title }}</h3>
+                </div>
+                <div class="card-metrics">
+                    <div class="metric">
+                        <span class="metric-label">Target</span>
+                        <span class="metric-value">{{ data.ipm.target }}{{ data.ipm.unit }}</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Realisasi</span>
+                        <span class="metric-value {% if data.ipm.status == 'equal' %}text-success{% elif data.ipm.status == 'above' %}text-danger{% else %}text-success{% endif %}">
+                            {{ data.ipm.realisasi }}{{ data.ipm.unit }}
+                        </span>
+                    </div>
+                </div>
+                <div class="card-main">
+                    <div class="big-number">{{ data.ipm.big_number }}{{ data.ipm.unit }}</div>
+                    <div class="province-name">{{ data.ipm.province }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Map and Info Row -->
+    <div class="row mt-4">
+        <div class="col-lg-8">
+            <div class="map-card">
+                <div class="card-header">
+                    <h5>Peta Realisasi Rasio Gini</h5>
+                </div>
+                <div class="card-body">
+                    <div id="indonesiaMap" style="height: 400px;"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="info-card">
+                <div class="card-header">
+                    <h5>Rasio Gini</h5>
+                </div>
+                <div class="card-body">
+                    <p>Rasio Gini cenderung lebih tinggi di wilayah barat seperti DKI Jakarta dan Jawa Barat, sementara wilayah timur seperti Papua dan Nusa Tenggara memiliki ketimpangan yang relatif lebih rendah</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Pass data to JavaScript
+window.dashboardData = {{ data | tojson | safe }};
+</script>
 {% endblock %}
